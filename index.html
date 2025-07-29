@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Terra Girando</title>
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      background: radial-gradient(circle, #1e3c72, #2a5298);
+    }
+
+    #earth {
+      width: 300px;
+      height: 300px;
+      background: url('https://raw.githubusercontent.com/saifullahshaukat/Rotating-Earth-Template/main/img/earth.jpg') no-repeat center center;
+      background-size: cover;
+      border-radius: 50%;
+      box-shadow: 0 0 15px rgba(0, 0, 0, 0.5);
+      animation: rotateEarth 10s linear infinite;
+    }
+
+    @keyframes rotateEarth {
+      from {
+        transform: rotate(0deg);
+      }
+      to {
+        transform: rotate(360deg);
+      }
+    }
+
+    .controls {
+      position: absolute;
+      top: 20px;
+      left: 20px;
+      background-color: rgba(0, 0, 0, 0.7);
+      padding: 10px;
+      border-radius: 8px;
+      color: white;
+    }
+
+    .controls label,
+    .controls button {
+      display: block;
+      margin: 5px 0;
+    }
+
+    .controls input[type="range"] {
+      width: 200px;
+    }
+  </style>
+</head>
+<body>
+
+  <div id="earth"></div>
+
+  <div class="controls">
+    <label for="speedRange">Velocidade de rotação:</label>
+    <input type="range" id="speedRange" min="1" max="100" value="10">
+    <span id="speedValue">10</span> segundos por rotação
+
+    <button id="realTimeBtn">Tempo Real</button>
+  </div>
+
+  <script>
+    const earth = document.getElementById('earth');
+    const speedRange = document.getElementById('speedRange');
+    const speedValue = document.getElementById('speedValue');
+    const realTimeBtn = document.getElementById('realTimeBtn');
+
+    let animationDuration = 10; // Tempo inicial em segundos
+
+    // Atualiza a velocidade de rotação
+    function updateRotationSpeed() {
+      animationDuration = speedRange.value;
+      speedValue.textContent = animationDuration;
+      earth.style.animationDuration = `${animationDuration}s`;
+    }
+
+    // Retorna à rotação em tempo real
+    function setRealTimeRotation() {
+      animationDuration = 10;
+      speedRange.value = animationDuration;
+      speedValue.textContent = animationDuration;
+      earth.style.animationDuration = `${animationDuration}s`;
+    }
+
+    // Event listeners
+    speedRange.addEventListener('input', updateRotationSpeed);
+    realTimeBtn.addEventListener('click', setRealTimeRotation);
+
+    // Inicializa a rotação
+    updateRotationSpeed();
+  </script>
+
+</body>
+</html>
