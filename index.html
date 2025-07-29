@@ -11,8 +11,10 @@
       display: flex;
       justify-content: center;
       align-items: center;
-      height: 100vh;
+      min-height: 100vh; /* Use min-height for better flexibility */
       background: radial-gradient(circle, #1e3c72, #2a5298);
+      font-family: sans-serif; /* Add a default font */
+      color: white; /* Default text color */
     }
 
     #earth {
@@ -39,19 +41,59 @@
       top: 20px;
       left: 20px;
       background-color: rgba(0, 0, 0, 0.7);
-      padding: 10px;
+      padding: 15px; /* Increase padding for better spacing */
       border-radius: 8px;
-      color: white;
+      display: flex; /* Use flexbox for control layout */
+      flex-direction: column;
+      gap: 10px; /* Space between elements */
     }
 
-    .controls label,
-    .controls button {
-      display: block;
-      margin: 5px 0;
+    .controls label {
+      font-weight: bold;
     }
 
     .controls input[type="range"] {
       width: 200px;
+      -webkit-appearance: none; /* Remove default slider styles */
+      appearance: none;
+      height: 8px;
+      background: #ddd;
+      outline: none;
+      opacity: 0.7;
+      transition: opacity .2s;
+      border-radius: 5px;
+    }
+
+    .controls input[type="range"]::-webkit-slider-thumb {
+      -webkit-appearance: none;
+      appearance: none;
+      width: 20px;
+      height: 20px;
+      border-radius: 50%;
+      background: #4CAF50; /* Green thumb */
+      cursor: pointer;
+    }
+
+    .controls input[type="range"]::-moz-range-thumb {
+      width: 20px;
+      height: 20px;
+      border-radius: 50%;
+      background: #4CAF50;
+      cursor: pointer;
+    }
+
+    .controls button {
+      padding: 8px 15px;
+      background-color: #007bff; /* Blue button */
+      color: white;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+    }
+
+    .controls button:hover {
+      background-color: #0056b3;
     }
   </style>
 </head>
@@ -61,10 +103,11 @@
 
   <div class="controls">
     <label for="speedRange">Velocidade de rotação:</label>
-    <input type="range" id="speedRange" min="1" max="100" value="10">
-    <span id="speedValue">10</span> segundos por rotação
-
-    <button id="realTimeBtn">Tempo Real</button>
+    <div>
+      <input type="range" id="speedRange" min="1" max="60" value="10">
+      <span id="speedValue">10</span> segundos por rotação
+    </div>
+    <button id="realTimeBtn">Redefinir</button>
   </div>
 
   <script>
@@ -73,28 +116,27 @@
     const speedValue = document.getElementById('speedValue');
     const realTimeBtn = document.getElementById('realTimeBtn');
 
-    let animationDuration = 10; // Tempo inicial em segundos
+    // Default animation duration in seconds (1 rotation every 10 seconds)
+    const DEFAULT_ANIMATION_DURATION = 10;
 
-    // Atualiza a velocidade de rotação
+    // Function to update the Earth's rotation speed
     function updateRotationSpeed() {
-      animationDuration = speedRange.value;
-      speedValue.textContent = animationDuration;
-      earth.style.animationDuration = `${animationDuration}s`;
+      const duration = speedRange.value;
+      speedValue.textContent = duration;
+      earth.style.animationDuration = `${duration}s`;
     }
 
-    // Retorna à rotação em tempo real
-    function setRealTimeRotation() {
-      animationDuration = 10;
-      speedRange.value = animationDuration;
-      speedValue.textContent = animationDuration;
-      earth.style.animationDuration = `${animationDuration}s`;
+    // Function to reset to default rotation speed
+    function resetRotationSpeed() {
+      speedRange.value = DEFAULT_ANIMATION_DURATION;
+      updateRotationSpeed(); // Call update to apply the change
     }
 
     // Event listeners
     speedRange.addEventListener('input', updateRotationSpeed);
-    realTimeBtn.addEventListener('click', setRealTimeRotation);
+    realTimeBtn.addEventListener('click', resetRotationSpeed);
 
-    // Inicializa a rotação
+    // Initialize rotation on page load
     updateRotationSpeed();
   </script>
 
